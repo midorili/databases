@@ -32,6 +32,16 @@ CREATE TABLE messages_users_rooms (
     ON DELETE CASCADE,
   FOREIGN KEY (Room_ID) REFERENCES rooms(ID)
     ON DELETE CASCADE
+
+
+);
+
+CREATE TABLE messages_rooms_users_joined (
+  ID int NOT NULL,
+  Message varchar(500),
+  Room varchar(255),
+  User varchar(255),
+  PRIMARY KEY (ID)
 );
 /* Create other tables and define schemas for them here! */
 
