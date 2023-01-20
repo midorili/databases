@@ -2,11 +2,6 @@ CREATE DATABASE chat;
 
 USE chat;
 
-CREATE TABLE messages (ß
-  ID int NOT NULL,
-  Message varchar(500),
-  PRIMARY KEY (ID)
-);
 
 CREATE TABLE users (
   ID int NOT NULL,
@@ -20,28 +15,17 @@ CREATE TABLE rooms (
   PRIMARY KEY (ID)
 );
 
-CREATE TABLE messages_users_rooms (
+CREATE TABLE messages (
   ID int NOT NULL,
-  Message_ID int,
+  Message varchar(500),
   User_ID int,
   Room_ID int,
   PRIMARY KEY (ID),
-  FOREIGN KEY (Message_ID) REFERENCES messages(ID)
-    ON DELETE CASCADE,
   FOREIGN KEY (User_ID) REFERENCES users(ID)
     ON DELETE CASCADE,
   FOREIGN KEY (Room_ID) REFERENCES rooms(ID)
     ON DELETE CASCADE
 
-
-);
-
-CREATE TABLE messages_rooms_users_joined (
-  ID int NOT NULL,
-  Message varchar(500),
-  Room varchar(255),
-  User varchar(255),
-  PRIMARY KEY (ID)
 );
 /* Create other tables and define schemas for them here! */
 
