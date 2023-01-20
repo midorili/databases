@@ -2,22 +2,22 @@ var db = require("../db");
 
 module.exports = {
   getAll: function () {
-    db.query(`SELECT * FROM users`, function (err, results) {
+    db.connection.query(`SELECT * FROM users`, function (err, results) {
       if (err) {
         throw err;
       } else {
-        console.log(results);
+        return results;
       }
     });
   },
   create: function (username) {
-    db.query(
-      `INSERT INTO users (User) VALUES (${username});`,
+    db.connection.query(
+      `INSERT INTO users (ID, User) VALUES (1, 'midori');`,
       (err, results) => {
         if (err) {
           throw err;
         } else {
-          console.log(results);
+          console.log("success", results);
         }
       }
     );
