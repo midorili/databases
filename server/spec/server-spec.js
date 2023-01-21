@@ -73,8 +73,8 @@ describe('Persistent Node Chat Server', () => {
     //****NOTE TO SELVES: PROBABLY NEED TO ADD ROOM AND USER ***
 
     const queryString =
-      'INSERT INTO messages (username, message, roomname) VALUES (?, ?, ?)';
-    const queryArgs = ['Valjean', 'In mercy\'s name, three days is all I need.', 'Hello'];
+      'INSERT INTO messages (username, message, roomname, createdAt, updatedAt) VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)';
+    const queryArgs = ['Valjean', 'In mercy\'s name, three days is all I need.', 'Hello', 'CURRENT_TIMESTAMP', 'CURRENT_TIMESTAMP'];
     /* TODO: The exact query string and query args to use here
      * depend on the schema you design, so I'll leave them up to you. */
     dbConnection.query(queryString, queryArgs, (err) => {
@@ -89,6 +89,8 @@ describe('Persistent Node Chat Server', () => {
           const messageLog = response.data;
           expect(messageLog[0].message).toEqual(queryArgs[1]);
           expect(messageLog[0].roomname).toEqual(queryArgs[2]);
+
+
           done();
         })
         .catch((err) => {
@@ -99,8 +101,8 @@ describe('Persistent Node Chat Server', () => {
 
   it('Should output all users from the DB', (done) => {
     const queryString =
-    'INSERT INTO users (username) VALUES (?)';
-    const queryArgs = ['Midori'];
+    'INSERT INTO users (username, createdAt, updatedAt) VALUES (?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)';
+    const queryArgs = ['Valjean', 'CURRENT_TIMESTAMP', 'CURRENT_TIMESTAMP'];
     /* TODO: The exact query string and query args to use here
    * depend on the schema you design, so I'll leave them up to you. */
     dbConnection.query(queryString, queryArgs, (err) => {
