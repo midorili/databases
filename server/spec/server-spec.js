@@ -9,7 +9,6 @@ const API_URL = "http://127.0.0.1:3000/classes";
 describe("Persistent Node Chat Server", () => {
   const dbConnection = mysql.createConnection({
     user: "root",
-    // password: "student",
     database: "chat",
   });
 
@@ -34,13 +33,13 @@ describe("Persistent Node Chat Server", () => {
     const roomname = "Hello";
     // Create a user on the chat server database.
     axios
-      .post(`${API_URL}/users`, { username })
+      .post(`${API_URL}/users`, { 'username': username })
       .then(() => {
         // Post a message to the node chat server:
         return axios.post(`${API_URL}/messages`, {
-          username,
-          message,
-          roomname,
+          'username': username,
+          'message': message,
+          'roomname': roomname,
         });
       })
       .then(() => {
@@ -59,7 +58,7 @@ describe("Persistent Node Chat Server", () => {
           expect(results.length).toEqual(1);
 
           // TODO: If you don't have a column named text, change this test.
-          expect(results[0].Message).toEqual(message);
+          expect(results[0].message).toEqual(message);
           done();
         });
       })
@@ -74,8 +73,8 @@ describe("Persistent Node Chat Server", () => {
     //****NOTE TO SELVES: PROBABLY NEED TO ADD ROOM AND USER ***
 
     const queryString =
-      "INSERT INTO messages (Message) VALUES ('FAKE MESSAGE'))";
-    const queryArgs = [];
+      "INSERT INTO messages (username, message, roomname) VALUES (?, ?, ?)";
+    const queryArgs = ["Valjean", "In mercy's name, three days is all I need.", "Hello"];
     /* TODO: The exact query string and query args to use here
      * depend on the schema you design, so I'll leave them up to you. */
     dbConnection.query(queryString, queryArgs, (err) => {
@@ -88,8 +87,8 @@ describe("Persistent Node Chat Server", () => {
         .get(`${API_URL}/messages`)
         .then((response) => {
           const messageLog = response.data;
-          expect(messageLog[0].text).toEqual(message);
-          expect(messageLog[0].roomname).toEqual(roomname);
+          expect(messageLog[0].message).toEqual(queryArgs[1]);
+          expect(messageLog[0].roomname).toEqual(queryArgs[2]);
           done();
         })
         .catch((err) => {
