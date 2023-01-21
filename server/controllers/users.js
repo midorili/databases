@@ -3,13 +3,13 @@ var models = require("../models");
 module.exports = {
   get: function (req, res, next) {
     //will be a problem, need to be async. await the data; do proper err handling;
-    res.json(models.users.getAll());
-
-    console.log("Controller get");
-    // res.json({ message: "DID WE GET SOMETHING?" });
+    models.users.getAll((users) => {
+      res.send(users);
+    });
   },
   post: function (req, res, next) {
-    res.send(models.users.create(JSON.stringify(res.body)));
-    // res.json({ message: "DID WE POST SOMETHING?" });
+    models.users.create(req.body.username, (success) => {
+      res.send(success);
+    });
   },
 };

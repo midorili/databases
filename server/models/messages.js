@@ -1,23 +1,23 @@
 var db = require("../db");
 
 module.exports = {
-  getAll: function () {
+  getAll: function (cb) {
     db.connection.query("SELECT * FROM messages", function (err, results) {
       if (err) {
         throw err;
       } else {
-        return results;
+        cb(results);
       }
     });
   }, // a function which produces all the messages
-  create: function (message) {
+  create: function (params, cb) {
     db.connection.query(
-      `INSERT INTO messages (Message) VALUES ('hi);`,
+      `INSERT INTO messages (username, message, roomname) VALUES (?, ?, ?);`, params,
       (err, results) => {
         if (err) {
           throw err;
         } else {
-          console.log("success", results);
+          cb(results);
         }
       }
     );
