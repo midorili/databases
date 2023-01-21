@@ -99,7 +99,7 @@ describe('Persistent Node Chat Server', () => {
     });
   });
 
-  it('Should output all users from the DB', (done) => {
+  it('Should output first user from the DB', (done) => {
     const queryString =
     'INSERT INTO users (username, createdAt, updatedAt) VALUES (?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)';
     const queryArgs = ['Valjean', 'CURRENT_TIMESTAMP', 'CURRENT_TIMESTAMP'];
@@ -123,4 +123,53 @@ describe('Persistent Node Chat Server', () => {
         });
     });
   });
+
+  it('Should output all users from the DB', (done) => {
+    const queryString =
+    'INSERT INTO users (username, createdAt, updatedAt) VALUES (?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)';
+    const queryArgs = ['Valjean', 'CURRENT_TIMESTAMP', 'CURRENT_TIMESTAMP'];
+    /* TODO: The exact query string and query args to use here
+   * depend on the schema you design, so I'll leave them up to you. */
+    dbConnection.query(queryString, queryArgs, (err) => {
+      if (err) {
+        throw err;
+      }
+      // Now query the Node chat server and see if it returns the message we just inserted:
+      axios
+        .get(`${API_URL}/users`)
+        .then((response) => {
+          const username = response.data;
+          expect(username[0].username).toEqual(queryArgs[0]);
+          done();
+        })
+        .catch((err) => {
+          throw err;
+        });
+    });
+  });
+
+  it('Should return roomname from the DB', (done) => {
+    const queryString =
+    'INSERT INTO messages (username, message, roomname, createdAt, updatedAt) VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)';
+    const queryArgs = ['Valjean', 'In mercy\'s name, three days is all I need.', 'Hello', 'CURRENT_TIMESTAMP', 'CURRENT_TIMESTAMP'];
+    /* TODO: The exact query string and query args to use here
+   * depend on the schema you design, so I'll leave them up to you. */
+    dbConnection.query(queryString, queryArgs, (err) => {
+      if (err) {
+        throw err;
+      }
+      // Now query the Node chat server and see if it returns the message we just inserted:
+      axios
+        .get(`${API_URL}/messages`)
+        .then((response) => {
+          const data = response.data;
+          expect(data[0].roomname).toEqual(queryArgs[2]);
+          done();
+        })
+        .catch((err) => {
+          throw err;
+        });
+    });
+  });
+
 });
