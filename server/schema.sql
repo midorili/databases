@@ -1,30 +1,24 @@
+DROP DATABASE chat;
+
 CREATE DATABASE chat;
 
 USE chat;
 
+--  product_id int(11) NOT NULL AUTO_INCREMENT,--
+--  add auto increment.
 
 CREATE TABLE users (
-  ID int NOT NULL,
-  User varchar(255),
-  PRIMARY KEY (ID)
-);
-
-CREATE TABLE rooms (
-  ID int NOT NULL,
-  Room varchar(255),
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `username`varchar (255),
   PRIMARY KEY (ID)
 );
 
 CREATE TABLE messages (
-  ID int NOT NULL,
-  Message varchar(500),
-  User_ID int,
-  Room_ID int,
-  PRIMARY KEY (ID),
-  FOREIGN KEY (User_ID) REFERENCES users(ID)
-    ON DELETE CASCADE,
-  FOREIGN KEY (Room_ID) REFERENCES rooms(ID)
-    ON DELETE CASCADE
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(500),
+  `message` varchar(500),
+  `roomname` varchar(255),
+  PRIMARY KEY (`ID`)
 
 );
 /* Create other tables and define schemas for them here! */
